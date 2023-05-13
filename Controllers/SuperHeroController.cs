@@ -56,21 +56,36 @@ public class SuperHeroController : ControllerBase
         return Ok(hero.Id);
     }
     
-    
     [Route("{id:int}")]
     [HttpPut]
-    public async Task<IActionResult> UpdateHero(int id, SuperHero hero)
+    public async Task<IActionResult> UpdateHero(int id, SuperHero request)
     {
-        var info = SuperHeroController._superHeroes.FirstOrDefault(h => h.Id == id);
-        if (info == null)
+        var hero = SuperHeroController._superHeroes.FirstOrDefault(h => h.Id == id);
+        if (hero == null)
         {
             return NotFound();
         }
-        info.Name = hero.Name;
-        info.FirstName = hero.FirstName;
-        info.LastName = hero.LastName;
-        info.Place = hero.Place;
+        hero.Name = hero.Name;
+        hero.FirstName = hero.FirstName;
+        hero.LastName = hero.LastName;
+        hero.Place = hero.Place;
         
         return Ok();
+    }
+
+    [Route("{id:int}")]
+    [HttpDelete]
+    public async Task<IActionResult> DeleteHero(int id)
+    {
+        var hero = SuperHeroController._superHeroes.FirstOrDefault(h => h.Id == id);
+        if (hero == null)
+        {
+            return NotFound();
+        }
+
+        var result = SuperHeroController._superHeroes.Remove(hero);
+        return result
+                   ? Ok()
+                   : Problem("Delete failed");
     }
 }
