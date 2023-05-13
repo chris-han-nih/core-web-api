@@ -53,7 +53,24 @@ public class SuperHeroController : ControllerBase
     public async Task<ActionResult<int>> AddHero(SuperHero hero)
     {
         SuperHeroController._superHeroes.Add(hero);
-        Console.WriteLine(SuperHeroController._superHeroes);
         return Ok(hero.Id);
+    }
+    
+    
+    [Route("{id:int}")]
+    [HttpPut]
+    public async Task<IActionResult> UpdateHero(int id, SuperHero hero)
+    {
+        var info = SuperHeroController._superHeroes.FirstOrDefault(h => h.Id == id);
+        if (info == null)
+        {
+            return NotFound();
+        }
+        info.Name = hero.Name;
+        info.FirstName = hero.FirstName;
+        info.LastName = hero.LastName;
+        info.Place = hero.Place;
+        
+        return Ok();
     }
 }
