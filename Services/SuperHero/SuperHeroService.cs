@@ -2,6 +2,7 @@ namespace core_web_api.Services.SuperHero;
 
 using core_web_api.Data;
 using core_web_api.Models;
+using Microsoft.EntityFrameworkCore;
 
 public class SuperHeroService: ISuperHeroService
 {
@@ -11,20 +12,21 @@ public class SuperHeroService: ISuperHeroService
         _context = context;
     }
     
-    public List<SuperHero> GetAllHeroes()
+    public async Task<List<SuperHero>> GetAllHeroes()
     {
-        return _context.SuperHeroes.ToList();
+        return await _context.SuperHeroes.ToListAsync();
     }
 
-    public SuperHero? GetHeroById(int id)
+    public async Task<SuperHero?> GetHeroById(int id)
     {
-        return _context.SuperHeroes.FirstOrDefault(h => h.Id == id);
+        return await _context.SuperHeroes.FindAsync(id);
     }
 
-    public int AddHero(SuperHero hero)
+    public async Task<int> AddHero(SuperHero hero)
     {
-        var result = _context.SuperHeroes.Add(hero);
-        _context.SaveChanges();
+        var result = await _context.SuperHeroes.AddAsync(hero);
+        await _context.SaveChangesAsync();
+        
         return result.Entity.Id;
     }
 
@@ -45,15 +47,16 @@ public class SuperHeroService: ISuperHeroService
         return true;
     }
 
-    public bool DeleteHero(int id)
+    public async Task<bool> DeleteHero(int id)
     {
-        var hero = _context.SuperHeroes.FirstOrDefault(h => h.Id == id);
+        var hero = await _context.SuperHeroes.FindAsync(id);
         if (hero == null)
         {
             return false;
         }
 
         _context.SuperHeroes.Remove(hero);
+        await _context.SaveChangesAsync();
         
         return true;
     }

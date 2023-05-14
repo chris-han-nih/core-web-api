@@ -4,13 +4,13 @@ using core_web_api.Models;
 
 public interface ISuperHeroService
 {
-    List<SuperHero> GetAllHeroes();
+    Task<List<SuperHero>> GetAllHeroes();
 
-    SuperHero? GetHeroById(int id);
+    Task<SuperHero?> GetHeroById(int id);
 
-    int AddHero(SuperHero hero);
+    Task<int> AddHero(SuperHero hero);
 
     Task<bool> UpdateHero(int id, SuperHero request);
 
-    bool DeleteHero(int id);
+    Task<bool> DeleteHero(int id);
 }
