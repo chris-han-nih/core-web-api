@@ -9,12 +9,5 @@ public class DataContext: DbContext
     {
     }
 
-    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-    {
-        base.OnConfiguring(optionsBuilder);
-        optionsBuilder
-           .UseSqlServer("Server=localhost;Database=SuperHeroes;User Id=sa;Password=H@n790331;TrustServerCertificate=true;");
-    }
-    
     public DbSet<SuperHero> SuperHeroes { get; set; }
 }
