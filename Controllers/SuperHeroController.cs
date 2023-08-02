@@ -9,15 +9,18 @@ using Microsoft.AspNetCore.Mvc;
 public class SuperHeroController : ControllerBase
 {
     private readonly ISuperHeroService _superHeroService;
+    private readonly ILogger<SuperHeroController> _logger;
 
-    public SuperHeroController(ISuperHeroService superHeroService)
+    public SuperHeroController(ISuperHeroService superHeroService, ILogger<SuperHeroController> logger)
     {
         _superHeroService = superHeroService;
+        _logger = logger;
     }
 
     [HttpGet]
     public async Task<ActionResult<SuperHero>> GetAllHeroes()
     {
+        _logger.LogInformation("Getting all heroes");
         return Ok(await _superHeroService.GetAllHeroes());
     }
     
